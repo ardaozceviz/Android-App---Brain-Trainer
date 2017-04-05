@@ -4,14 +4,13 @@ import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     Button startButton;
     Button button0, button1, button2, button3, playAgainButton;
 
+    TextView yourScoreTextView;
     TextView sumTextView;
     TextView resultTextView;
     TextView scoreTextView;
@@ -75,14 +75,12 @@ public class MainActivity extends AppCompatActivity {
             answerKey = (String) answers.nextElement();
             printButton[printButtonCounter] = Integer.parseInt(answerKey);
             printButtonCounter++;
-            //System.out.println("Key: " +answerKey+ " & Value: " + answers.get(answerKey));
         }
 
-        button0.setText(Integer.toString(printButton[0]));
-        button1.setText(Integer.toString(printButton[1]));
-        button2.setText(Integer.toString(printButton[2]));
-        button3.setText(Integer.toString(printButton[3]));
-
+        button0.setText(String.valueOf(printButton[0]));
+        button1.setText(String.valueOf(printButton[1]));
+        button2.setText(String.valueOf(printButton[2]));
+        button3.setText(String.valueOf(printButton[3]));
     }
 
     public void playAgain (View view) {
@@ -91,10 +89,9 @@ public class MainActivity extends AppCompatActivity {
         locationOfCorrectAnswer = 0;
         incorrectAnswer = 0;
 
-        timeTextView.setText("30s");
-        scoreTextView.setText("0 / 0");
-        gameOverScoreTextView.setText("");
-        resultTextView.setText("");
+        timeTextView.setText(R.string.timeTextView);
+        scoreTextView.setText(R.string.scoreTextView);
+        resultTextView.setText(R.string.resultTextViewReset);
 
         gameOverLayout.setVisibility(LinearLayout.INVISIBLE);
         gameLayout.setVisibility(ConstraintLayout.VISIBLE);
@@ -105,13 +102,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                //timeTextView.setText(String.valueOf(millisUntilFinished / 1000) + "s");
-                timeTextView.setText(String.format("%02ds", millisUntilFinished / 1000));
+                timeTextView.setText(String.format(Locale.getDefault(), "%02ds", millisUntilFinished / 1000));
             }
 
             @Override
             public void onFinish() {
-                timeTextView.setText("0s");
+                timeTextView.setText(R.string.timeTextViewZero);
                 gameOverScoreTextView.setText(Integer.toString(score) + " / " + Integer.toString(numberOfQuestions));
                 gameLayout.setVisibility(ConstraintLayout.INVISIBLE);
                 gameOverLayout.setVisibility(LinearLayout.VISIBLE);
@@ -120,16 +116,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void chooseAnswer (View view) {
-        Log.i("Log: ", String.valueOf(answersHashTable.get(Integer.toString(printButton[Integer.parseInt((String.valueOf(view.getTag())))]))));
-        Log.i("Button: ", Integer.toString(printButton[Integer.parseInt((String.valueOf(view.getTag())))]));
-        if(String.valueOf(answersHashTable.get(Integer.toString(printButton[Integer.parseInt((String.valueOf(view.getTag())))]))).equals("correct")){
+        String stringValueOnTheButton = String.valueOf(printButton[Integer.parseInt ((String) view.getTag())]);
+        if(String.valueOf(answersHashTable.get(stringValueOnTheButton)).equals("correct")){
             score++;
             numberOfQuestions++;
-            resultTextView.setText("Correct!");
-            Log.i("Correct","correct");
+            resultTextView.setText(R.string.resultTextViewCorrect);
         } else {
             numberOfQuestions++;
-            resultTextView.setText("Wrong.");
+            resultTextView.setText(R.string.resultTextViewIncorrect);
         }
         scoreTextView.setText(Integer.toString(score) + " / " + Integer.toString(numberOfQuestions));
         generateQuestion();
@@ -151,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
         startButton = (Button) findViewById(R.id.startButton);
 
+        yourScoreTextView = (TextView) findViewById(R.id.yourScoreTextView);
         sumTextView = (TextView) findViewById(R.id.sumTextView);
         resultTextView = (TextView) findViewById(R.id.resultTextView);
         scoreTextView = (TextView) findViewById(R.id.scoreTextView);
@@ -164,5 +159,10 @@ public class MainActivity extends AppCompatActivity {
 
         playAgainButton = (Button) findViewById(R.id.playAgainButton);
 
+
+        // Setting layout texts
+        startButton.setText(R.string.startButton);
+        playAgainButton.setText(R.string.playAgainButton);
+        yourScoreTextView.setText(R.string.yourScoreTextView);
     }
 }

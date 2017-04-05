@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Brain Trainer</string>
+
+    <string name="yourScoreTextView">Your score</string>
+    <string name="timeTextView">30s</string>
+    <string name="timeTextViewZero">0s</string>
+    <string name="scoreTextView">0 / 0</string>
+    <string name="resultTextViewReset"> </string>
+    <string name="resultTextViewCorrect">Correct!</string>
+    <string name="resultTextViewIncorrect">Wrong.</string>
+
+    <string name="playAgainButton">Play again</string>
+    <string name="startButton">Start</string>
 </resources>
